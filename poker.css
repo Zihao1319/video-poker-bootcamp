@@ -2,48 +2,45 @@ body {
   background-color: pink;
 }
 
-.square {
-  padding: 10px;
+.card {
   margin: 10px;
+  padding: 10px;
   background-color: white;
+  border-color: black;
+  border-style: solid;
+  width: 50px;
+  text-align: center;
+  border-radius: 8px;
   display: inline-block;
-  height: 10px;
-  width: 10px;
-  vertical-align: top;
 }
 
-.inputClass {
-  color: red;
-  padding: 10px;
+.suit {
+  margin: 5px;
+  font-size: 20px;
 }
 
-.display {
-  margin: 10px;
-  padding: 10px;
-  background-color: white;
-}
-
-.displayred {
-  background-color: red;
-}
-
-.button {
-  margin: 10px;
-  padding: 10px;
-}
-
-.green {
-  color: green;
+.name {
+  margin: 5px;
+  font-size: 24px;
+  font-weight: bold;
+  font-family: sans-serif;
 }
 
 .red {
   color: red;
 }
 
-.yellow {
+.black {
   color: black;
 }
 
-.blue {
-  color: blue;
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background-color: black;
+}
+
+.button {
+  background-color: yellow;
 }
