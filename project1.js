@@ -9,7 +9,8 @@
 // 6) User click the deal button and the game will restart again
 
 //variables
-let displayArray = [];
+let handArray = [];
+let cardState = "unselected";
 
 // Designs
 
@@ -122,16 +123,40 @@ function drawCard(currentCard) {
 
 const deck = shuffleCards(makeDeck());
 
-// function to display cards on hand
-function displayCards(array, num) {
+// function to get cards on hand
+function getHandArray(array, num) {
   for (let i = 0; i < num; i++) {
-    displayArray[i] = deck.pop();
-    let cardElement = drawCard(displayArray[i]);
-    console.log(cardElement);
-    document.getElementById(`cardContainer${i + 1}`).appendChild(cardElement);
+    handArray[i] = deck.pop();
   }
-  console.log(displayArray);
-  return displayArray;
+  console.log(handArray);
+  return handArray;
+}
+
+// displaying cards on hand
+function displayCards(array) {
+  for (let i = 0; i < array.length; i++) {
+    let cardElement = drawCard(array[i]);
+    // console.log(cardElement);
+    document.getElementById(`cardContainer${i + 1}`).appendChild(cardElement);
+    cardElement.addEventListener ("click", () => {
+      
+      // change the css setting of the container
+      console.log(cardState)
+      console.log(`cardContainer${i + 1}`)
+
+      let container = document.getElementById(`cardContainer${i + 1}`)
+      if (cardState == "selected") {
+        container.classList.add("selected")
+        cardState = "unselected"
+
+      } else if (cardState == "unselected") {
+        container.classList.remove("selected")
+        
+      }
+
+    })
+  }
+  console.log(array);
 }
 
 // function to assess the scores (calculatehand)
@@ -158,8 +183,10 @@ btn.addEventListener("click", () => {
 });
 
 // changes the size of card when clicked
-const cardClick = document.getElement;
+const cardClick = document.getElementById("container");
 
 // game logic
-let handArray = displayCards(deck, 5);
-calcHandScore(handArray);
+
+let array = getHandArray (deck, 5)
+displayCards(array)
+calcHandScore(array);

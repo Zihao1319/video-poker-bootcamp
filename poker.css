@@ -41,6 +41,10 @@ body {
   background-color: black;
 }
 
+.selected {
+  background-color: red;
+}
+
 .button {
   background-color: yellow;
 }
