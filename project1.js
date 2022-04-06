@@ -10,7 +10,6 @@
 
 //variables
 let handArray = [];
-let cardState = "unselected";
 
 // Designs
 
@@ -70,6 +69,9 @@ const makeDeck = () => {
       let displaySymbol;
       let cardColor;
 
+      // setting holding status
+      let holdingStatus;
+
       if (currentSuit === "diamonds") {
         displaySymbol = "&#9830";
         cardColor = "red";
@@ -84,6 +86,8 @@ const makeDeck = () => {
         cardColor = "black";
       }
 
+      holdingStatus = "idle";
+
       // Create a new card with the current name, suit, and rank
       const card = {
         name: cardName,
@@ -91,6 +95,7 @@ const makeDeck = () => {
         color: cardColor,
         suit: currentSuit,
         rank: rankCounter,
+        status: holdingStatus,
       };
 
       // Add the new card to the deck
@@ -136,27 +141,53 @@ function getHandArray(array, num) {
 function displayCards(array) {
   for (let i = 0; i < array.length; i++) {
     let cardElement = drawCard(array[i]);
+
     // console.log(cardElement);
     document.getElementById(`cardContainer${i + 1}`).appendChild(cardElement);
-    cardElement.addEventListener ("click", () => {
-      
+
+    // when clicked, it will change the css setting as well as put a note on the array
+    cardElement.addEventListener("click", () => {
       // change the css setting of the container
-      console.log(cardState)
-      console.log(`cardContainer${i + 1}`)
+      console.log(`cardContainer${i + 1}`);
+      let container = document.getElementById(`cardContainer${i + 1}`);
 
-      let container = document.getElementById(`cardContainer${i + 1}`)
-      if (cardState == "selected") {
-        container.classList.add("selected")
-        cardState = "unselected"
+      if (container.classList.contains("selected")) {
+        cardState = "unselected";
+        container.classList.remove("selected");
 
-      } else if (cardState == "unselected") {
-        container.classList.remove("selected")
-        
+        // becomes idle status
+        array[i].status = "idle";
+        console.log(array[i]);
+      } else {
+        cardState = "selected";
+        container.classList.add("selected");
+
+        // becomes held status
+        array[i].status = "held";
+        console.log(array[i]);
       }
-
-    })
+    });
   }
   console.log(array);
+}
+
+// function to check status
+
+function swapCard(array) {
+  for (let i = 0; i < array.length; i++) {
+    // emptying existing content
+    let container = document.getElementById(`cardContainer${i + 1}`);
+    container.innerHTML = "";
+    container.classList.remove("selected");
+
+    // redisplaying the new cards if status is held
+    if (array[i].status === "held") {
+      //replace card
+      array[i] = deck.pop();
+    }
+    console.log(array);
+  }
+  displayCards(array);
 }
 
 // function to assess the scores (calculatehand)
@@ -165,7 +196,7 @@ function calcHandScore(array) {
   for (let i = 0; i < array.length; i++) {
     score += array[i].rank;
   }
-  console.log(score);
+  console.log(`HandArray score: ${score}`);
   return score;
 }
 
@@ -173,6 +204,7 @@ function calcHandScore(array) {
 const btn = document.getElementById("button");
 
 btn.addEventListener("click", () => {
+  swapCard(handArray);
   if (btn.value === "Deal") {
     btn.value = "Draw";
     btn.classList.add("red");
@@ -187,6 +219,6 @@ const cardClick = document.getElementById("container");
 
 // game logic
 
-let array = getHandArray (deck, 5)
-displayCards(array)
+let array = getHandArray(deck, 5);
+displayCards(array);
 calcHandScore(array);
