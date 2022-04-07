@@ -76,7 +76,7 @@ const makeDeck = () => {
         displaySymbol = "&#9830";
         cardColor = "red";
       } else if (currentSuit === "hearts") {
-        displaySymbol = "&#9830";
+        displaySymbol = "&#9829";
         cardColor = "red";
       } else if (currentSuit === "clubs") {
         displaySymbol = "&#9827";
@@ -171,8 +171,7 @@ function displayCards(array) {
   console.log(array);
 }
 
-// function to check status
-
+// function to swap cards
 function swapCard(array) {
   for (let i = 0; i < array.length; i++) {
     // emptying existing content
@@ -200,6 +199,79 @@ function calcHandScore(array) {
   return score;
 }
 
+// function to get all the necessary details
+
+function getArrayInfo(array) {
+  console.log(array);
+  // finding the total cards with same suit
+  let sameSuitCount = 0;
+  let suitArray = [];
+
+  for (let i = 0; i < array.length; i++) {
+    suitArray.push(array[i].suit);
+  }
+
+  console.log(suitArray);
+
+  for (let i = 0; i < suitArray.length; i++) {
+    if (suitArray[i] == suitArray[i + 1]) {
+      sameSuitCount += 1;
+    }
+    console.log(sameSuitCount);
+  }
+
+  // finding the total cards with same rank count and the unique count of card's rank
+  let sameRankCount = 0;
+  let uniqueRankCount = 0;
+
+  for (let i = 0; i < array.length; i++) {
+    let rankArray = [];
+    rankArray.push(array[i].rank);
+
+    if (rankArray[i] == rankArray[i + 1]) {
+      sameRankCount += 1;
+    } else {
+      uniqueRankCount += 1;
+    }
+  }
+
+  // finding the total rank sum of every cards
+  let totalRankCount = 0;
+  for (let i = 0; i < array.length; i++) {
+    let totalRank = [];
+    totalRank.push(array[i].rank);
+    totalRankCount += totalRank[i];
+  }
+
+  // finding out the summation of difference between each card
+  let rankDiffSum = 0;
+  let rankArray = [];
+  let sortedRankArray = [];
+
+  for (let i = 0; i < array.length; i++) {
+    rankArray.push(array[i].rank);
+  }
+
+  sortedRankArray = rankArray.sort(function (a, b) {
+    return a - b;
+  });
+
+  for (let i = 0; i < sortedRankArray.length; i++) {
+    rankDiffSum += sortedRankArray[i + 1] - sortedRankArray[i];
+  }
+
+  let arrayInfo = {
+    sameSuit: sameSuitCount,
+    sameRank: sameRankCount,
+    uniqueRank: uniqueRankCount,
+    totalRank: totalRankCount,
+    rankDiffSum: rankDiffSum,
+  };
+
+  console.log(arrayInfo);
+  return arrayInfo;
+}
+
 //changes the color and text of button when cards are clicked
 const btn = document.getElementById("button");
 
@@ -222,3 +294,5 @@ const cardClick = document.getElementById("container");
 let array = getHandArray(deck, 5);
 displayCards(array);
 calcHandScore(array);
+
+getArrayInfo(array);
