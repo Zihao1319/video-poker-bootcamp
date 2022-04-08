@@ -203,67 +203,77 @@ function calcHandScore(array) {
 
 function getArrayInfo(array) {
   console.log(array);
+
   // finding the total cards with same suit
-  let sameSuitCount = 0;
+  let uniqueSuitCount = 0;
+  let uniqueRankCount = 0;
+  let totalRankCount = 0;
   let suitArray = [];
+  let rankArray = [];
+  let totalRank = [];
+  let suitArrayTally = {};
+  let rankArrayTally = {};
+
 
   for (let i = 0; i < array.length; i++) {
     suitArray.push(array[i].suit);
+    rankArray.push(array[i].rank);
   }
 
   console.log(suitArray);
+  console.log(rankArray);
 
-  for (let i = 0; i < suitArray.length; i++) {
-    if (suitArray[i] == suitArray[i + 1]) {
-      sameSuitCount += 1;
-    }
-    console.log(sameSuitCount);
-  }
-
-  // finding the total cards with same rank count and the unique count of card's rank
-  let sameRankCount = 0;
-  let uniqueRankCount = 0;
-
+  // finding similar and unique suit counts
   for (let i = 0; i < array.length; i++) {
-    let rankArray = [];
-    rankArray.push(array[i].rank);
 
-    if (rankArray[i] == rankArray[i + 1]) {
-      sameRankCount += 1;
+    if (suitArray[i] in suitArrayTally) {
+      suitArrayTally[suitArray[i]] += 1;
     } else {
-      uniqueRankCount += 1;
+      suitArrayTally[suitArray[i]] = 1;
+      uniqueSuitCount += 1;
     }
   }
 
   // finding the total rank sum of every cards
-  let totalRankCount = 0;
+  // finding the total cards with same rank count and the unique count of card's rank
   for (let i = 0; i < array.length; i++) {
-    let totalRank = [];
-    totalRank.push(array[i].rank);
-    totalRankCount += totalRank[i];
+    totalRankCount += rankArray[i];
+    if (rankArray[i] in rankArrayTally) {
+      rankArrayTally[rankArray[i]] += 1;
+    } else {
+      rankArrayTally[rankArray[i]] = 1;
+      uniqueRankCount += 1;
+    }
   }
+
 
   // finding out the summation of difference between each card
   let rankDiffSum = 0;
-  let rankArray = [];
   let sortedRankArray = [];
-
-  for (let i = 0; i < array.length; i++) {
-    rankArray.push(array[i].rank);
-  }
 
   sortedRankArray = rankArray.sort(function (a, b) {
     return a - b;
   });
 
+  console.log(sortedRankArray);
+
   for (let i = 0; i < sortedRankArray.length; i++) {
+    min = sortedRankArray [i]
+    max = sortedRankArray [i]
+
+    if (min > sortedRankArray [i] ) {
+      min = sortedRankArray[i]
+    } else if () {
+      
+    }
     rankDiffSum += sortedRankArray[i + 1] - sortedRankArray[i];
   }
 
   let arrayInfo = {
-    sameSuit: sameSuitCount,
-    sameRank: sameRankCount,
+    suitTally: suitArrayTally,
+    rankTally: rankArrayTally,
     uniqueRank: uniqueRankCount,
+    uniqueSuit: uniqueSuitCount,
     totalRank: totalRankCount,
     rankDiffSum: rankDiffSum,
   };
