@@ -1,0 +1,38 @@
+let royalFlush = [
+  {
+    name: "J",
+    color: "red",
+    suit: "hearts",
+    rank: 11,
+    status: "idle",
+  },
+  {
+    name: "J",
+    color: "black",
+    suit: "clubs",
+    rank: 11,
+    status: "idle",
+  },
+  {
+    name: "J",
+    color: "black",
+    suit: "clubs",
+    rank: 11,
+    status: "idle",
+  },
+
+  {
+    name: "J",
+    color: "black",
+    suit: "clubs",
+    rank: 11,
+    status: "idle",
+  },
+  {
+    name: "J",
+    color: "black",
+    suit: "clubs",
+    rank: 11,
+    status: "idle",
+  },
+];

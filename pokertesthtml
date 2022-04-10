@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Video poker test cases</title>
+    <link rel="stylesheet" href="poker.css" />
+  </head>
+
+  <body>
+    <h1 id="header">test cases!</h1>
+
+    <div id="container" class="container">
+      <div id="cardContainer1" class="cardContainer1"></div>
+      <div id="cardContainer2" class="cardContainer2"></div>
+      <div id="cardContainer3" class="cardContainer3"></div>
+      <div id="cardContainer4" class="cardContainer4"></div>
+      <div id="cardContainer5" class="cardContainer5"></div>
+    </div>
+
+    <div>
+      <input type="button" id="button" value="Deal" class="button" />
+    </div>
+
+    <!-- Import program logic -->
+    <script src="testCases.js"></script>
+  </body>
+</html>

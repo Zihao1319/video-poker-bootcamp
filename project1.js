@@ -10,8 +10,27 @@
 
 //variables
 let handArray = [];
+let credit = 100;
 
-// Designs
+// DESIGNS
+
+//changes the color and text of button when cards are clicked
+const btn = document.getElementById("button");
+btn.addEventListener("click", () => {
+  if (btn.value === "Deal") {
+    btn.value = "Draw";
+    btn.classList.add("red");
+  } else {
+    btn.value = "Deal";
+    btn.classList.remove("red");
+  }
+});
+
+//message display
+
+//play again display
+
+//credit display
 
 // HELPER FUNCTIONS //
 
@@ -36,6 +55,7 @@ const shuffleCards = (cards) => {
   return cards;
 };
 
+//making a full deck
 const makeDeck = () => {
   // Initialise an empty deck array
   const newDeck = [];
@@ -126,8 +146,6 @@ function drawCard(currentCard) {
   return card;
 }
 
-const deck = shuffleCards(makeDeck());
-
 // function to get cards on hand
 function getHandArray(array, num) {
   for (let i = 0; i < num; i++) {
@@ -143,9 +161,11 @@ function displayCards(array) {
     let cardElement = drawCard(array[i]);
 
     // console.log(cardElement);
+
     document.getElementById(`cardContainer${i + 1}`).appendChild(cardElement);
 
     // when clicked, it will change the css setting as well as put a note on the array
+
     cardElement.addEventListener("click", () => {
       // change the css setting of the container
       console.log(`cardContainer${i + 1}`);
@@ -171,8 +191,9 @@ function displayCards(array) {
   console.log(array);
 }
 
-// function to swap cards
+// function to swap cards if clicked
 function swapCard(array) {
+  let newArray = [];
   for (let i = 0; i < array.length; i++) {
     // emptying existing content
     let container = document.getElementById(`cardContainer${i + 1}`);
@@ -180,13 +201,15 @@ function swapCard(array) {
     container.classList.remove("selected");
 
     // redisplaying the new cards if status is held
-    if (array[i].status === "held") {
+    if (array[i].status !== "held") {
       //replace card
       array[i] = deck.pop();
     }
-    console.log(array);
+    newArray = array;
   }
-  displayCards(array);
+  console.log(newArray);
+  displayCards(newArray);
+  return newArray;
 }
 
 // function to assess the scores (calculatehand)
@@ -200,7 +223,6 @@ function calcHandScore(array) {
 }
 
 // function to get all the necessary details
-
 function getArrayInfo(array) {
   console.log(array);
 
@@ -208,12 +230,12 @@ function getArrayInfo(array) {
   let uniqueSuitCount = 0;
   let uniqueRankCount = 0;
   let totalRankCount = 0;
+  let rankDiffSum = 0;
   let suitArray = [];
   let rankArray = [];
-  let totalRank = [];
+  let sortedRankArray = [];
   let suitArrayTally = {};
   let rankArrayTally = {};
-
 
   for (let i = 0; i < array.length; i++) {
     suitArray.push(array[i].suit);
@@ -225,7 +247,6 @@ function getArrayInfo(array) {
 
   // finding similar and unique suit counts
   for (let i = 0; i < array.length; i++) {
-
     if (suitArray[i] in suitArrayTally) {
       suitArrayTally[suitArray[i]] += 1;
     } else {
@@ -246,28 +267,27 @@ function getArrayInfo(array) {
     }
   }
 
-
   // finding out the summation of difference between each card
-  let rankDiffSum = 0;
-  let sortedRankArray = [];
 
-  sortedRankArray = rankArray.sort(function (a, b) {
-    return a - b;
-  });
+  // sortedRankArray = rankArray.sort(function (a, b) {
+  //   return a - b;
+  // });
 
-  console.log(sortedRankArray);
-
-  for (let i = 0; i < sortedRankArray.length; i++) {
-    min = sortedRankArray [i]
-    max = sortedRankArray [i]
-
-    if (min > sortedRankArray [i] ) {
-      min = sortedRankArray[i]
-    } else if () {
-      
+  // console.log(sortedRankArray);
+  min = rankArray[0];
+  max = rankArray[0];
+  for (let i = 0; i < rankArray.length; i++) {
+    if (min > rankArray[i]) {
+      min = rankArray[i];
     }
-    rankDiffSum += sortedRankArray[i + 1] - sortedRankArray[i];
+    if (max < rankArray[i]) {
+      max = rankArray[i];
+    }
   }
+
+  console.log(min);
+  console.log(max);
+  rankDiffSum = max - min;
 
   let arrayInfo = {
     suitTally: suitArrayTally,
@@ -282,27 +302,120 @@ function getArrayInfo(array) {
   return arrayInfo;
 }
 
-//changes the color and text of button when cards are clicked
-const btn = document.getElementById("button");
+// checking winning conditions
+function checkWin(array) {
+  let uniqueSuitCount = array.uniqueSuit;
+  let uniqueRankCount = array.uniqueRank;
+  let rankTally = array.rankTally;
+  let totalRank = array.totalRank;
+  let rankDiffSum = array.rankDiffSum;
 
-btn.addEventListener("click", () => {
-  swapCard(handArray);
-  if (btn.value === "Deal") {
-    btn.value = "Draw";
-    btn.classList.add("red");
+  let maxNum = getMax(rankTally);
+
+  if (uniqueSuitCount == 1) {
+    // royal flush, straight flush, and flush falls here
+    if (rankTally.hasOwnProperty("1")) {
+      // only for A (labeled as 1)
+
+      if (totalRank == 47) {
+        // royal flush
+        console.log("royal flush");
+      } else if (totalRank == 15) {
+        // straight flush with ace
+        console.log("straight flush with ace");
+      }
+    } else if (rankDiffSum == 4) {
+      // straight flush without ace
+      console.log("straight flush without ace");
+    } else {
+      console.log("flush");
+    }
+  } else if (uniqueSuitCount !== 1) {
+    if (uniqueRankCount == 2) {
+      // 4 of a kind, full house
+
+      if (maxNum == 4) {
+        // 4 of a kind,
+        console.log("4 of a kind");
+      } else if (maxNum == 3) {
+        // full house
+        console.log("full house");
+      }
+    } else if (uniqueRankCount == 3) {
+      // 3 of a kind, 2 pairs
+
+      if (maxNum == 3) {
+        // 3 of a kind
+        console.log("3 of a kind");
+      } else if (maxNum == 2) {
+        // 2 pairs
+        console.log("2 pairs");
+      }
+    } else if (uniqueRankCount == 4) {
+      // 1 pair only
+      if (maxNum == 2) {
+        console.log("1 pair only");
+      }
+    } else if (uniqueRankCount == 5) {
+      // only straight
+
+      if (rankTally.hasOwnProperty("1")) {
+        // only for A (labeled as 1)
+
+        if (totalRank == 47 || totalRank == 15) {
+          // straight
+          console.log("straight");
+        }
+      } else if (rankDiffSum == 4) {
+        // straight without ace
+        console.log("straight without ace");
+      }
+    }
   } else {
-    btn.value = "Deal";
-    btn.classList.remove("red");
+    console.log("none of the above");
   }
-});
+}
 
-// changes the size of card when clicked
-const cardClick = document.getElementById("container");
+// get the highest number in an array
+function getMax(array) {
+  let tempArray = [];
+  for (let i in array) {
+    tempArray.push(array[i]);
+  }
+  let sortedArray = tempArray.sort((a, b) => b - a);
+  let count = 1;
+  return sortedArray[0];
+}
+
+// game initialization
+const initGame = () => {
+  const deck = shuffleCards(makeDeck());
+  getHandArray(deck, 5);
+  displayCards(array);
+};
 
 // game logic
-
+const deck = shuffleCards(makeDeck());
 let array = getHandArray(deck, 5);
 displayCards(array);
+
 calcHandScore(array);
 
-getArrayInfo(array);
+let tempArray = getArrayInfo(array);
+console.log(tempArray);
+checkWin(tempArray);
+
+// ARCHIVED CODES
+// min = sortedRankArray[0];
+// max = sortedRankArray[0];
+// for (let i = 0; i < sortedRankArray.length; i++) {
+//   if (min > sortedRankArray[i]) {
+//     min = sortedRankArray[i];
+//   }
+//   if (max < sortedRankArray[i]) {
+//     max = sortedRankArray[i];
+//   }
+// }
+// console.log(min);
+// console.log(max);
+// rankDiffSum = max - min;
