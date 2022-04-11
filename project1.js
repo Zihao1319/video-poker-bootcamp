@@ -19,18 +19,15 @@ let credit = 100;
 //changes the color and text of button when cards are clicked
 const btn = document.getElementById("button");
 btn.addEventListener("click", () => {
-
   if (btn.value === "Deal") {
     btn.value = "Draw";
     btn.classList.add("red");
   } else {
-    swapCard(array)
+    swapCard(array);
     btn.value = "Deal";
     btn.classList.remove("red");
   }
 });
-
-//message display
 
 //play again display
 
@@ -150,6 +147,25 @@ function drawCard(currentCard) {
   return card;
 }
 
+// draw backside
+function drawCard2(currentCard) {
+  const suit = document.createElement("div");
+  suit.classList.add("suit", currentCard.color);
+  suit.innerHTML = currentCard.symbol;
+
+  const name = document.createElement("div");
+  name.classList.add("name", currentCard.color);
+  name.innerHTML = currentCard.name;
+
+  const card = document.createElement("div");
+  card.classList.add("card");
+
+  card.appendChild(name);
+  card.appendChild(suit);
+
+  return card;
+}
+
 // function to get cards on hand
 function getHandArray(array, num) {
   for (let i = 0; i < num; i++) {
@@ -162,29 +178,36 @@ function getHandArray(array, num) {
 // displaying cards on hand
 function displayCards(array) {
   for (let i = 0; i < array.length; i++) {
-    let cardElement =  drawCard(array[i]);
+    let cardElement = drawCard(array[i]);
+    let heldMessage = document.createElement("p");
+    heldMessage.style.margin = "0px";
+    heldMessage.style.marginBottom = "10px";
 
     document.getElementById(`cardContainer${i + 1}`).appendChild(cardElement);
+    document.getElementById(`cardContainer${i + 1}`).appendChild(heldMessage);
 
     // when clicked, it will change the css setting as well as put a note on the array
-
     cardElement.addEventListener("click", () => {
       // change the css setting of the container
       console.log(`cardContainer${i + 1}`);
+
       let container = document.getElementById(`cardContainer${i + 1}`);
 
       if (container.classList.contains("selected")) {
         cardState = "unselected";
         container.classList.remove("selected");
+        heldMessage.innerHTML = "";
         cardSelectedCounter -= 1;
 
         // becomes idle status
         array[i].status = "idle";
         // console.log(array[i]);
-
       } else {
         cardState = "selected";
         container.classList.add("selected");
+        heldMessage.innerHTML = "Held";
+
+        // display "held" message when clicked
         cardSelectedCounter += 1;
 
         // becomes held status
@@ -193,20 +216,35 @@ function displayCards(array) {
       }
 
       // changes the deal/draw button when more than 1 card is highlighted
-      if (cardSelectedCounter >= 1){
-        btn.value = "Draw"
+      if (cardSelectedCounter >= 1) {
+        btn.value = "Draw";
         btn.classList.add("red");
-
       } else {
         btn.value = "Deal";
         btn.classList.remove("red");
       }
     });
-    
-  }  
-  console.log("counter: " + cardSelectedCounter)
+  }
+  console.log("counter: " + cardSelectedCounter);
   // console.log(array);
   // console.log(cardState)
+}
+
+function displayBackside(num) {
+  for (let i = 0; i < num; i++) {
+    let backDesign = document.createElement("IMG");
+    backDesign.setAttribute(
+      "src",
+      "http://chetart.com/blog/wp-content/uploads/2012/05/playing-card-back.jpg"
+    );
+    backDesign.setAttribute("width", "200px");
+    backDesign.setAttribute("height", "250px");
+    backDesign.setAttribute("margin", "30px");
+    backDesign.setAttribute("padding", "30px");
+    backDesign.setAttribute("alt", "Some really cool pic");
+    document.getElementById(`cardContainer${i + 1}`).appendChild(backDesign);
+    console.log("passed");
+  }
 }
 
 // function to swap cards if clicked
@@ -224,13 +262,12 @@ function swapCard(array) {
       array[i] = deck.pop();
     }
     newArray = array;
-
   }
   console.log(newArray);
   displayCards(newArray);
-  let newArrayInfo = getArrayInfo(newArray)
-  checkWin(newArrayInfo)
-  
+  let newArrayInfo = getArrayInfo(newArray);
+  checkWin(newArrayInfo);
+
   return newArray;
 }
 
@@ -420,30 +457,24 @@ const initGame = () => {
 //1. all cards are flipped, showing backside only
 //1.1 Button is deal, click and all cards will be displayed
 //2.1 Select the cards you want to hold
-//2.2 button will change to draw 
+//2.2 button will change to draw
 //2.3 Click and it will become deal again
 //2.4 cards will be redisplayed
-//2.5 showing the message and 
+//2.5 showing the message and
 //2.6 credit either will be added or subtracted
 //3. Click deal, and cards
 
-
-
 const deck = shuffleCards(makeDeck());
 let array = getHandArray(deck, 5);
-setTimeout (displayCards(array), 5000);
+displayCards(array);
 calcHandScore(array);
-console.log(cardSelectedCounter)
+console.log(cardSelectedCounter);
 
 let tempArray = getArrayInfo(array);
 // console.log(tempArray);
 checkWin(tempArray);
 
-
-
-
-
-
+// displayBackside(5);
 
 // ARCHIVED CODES
 // min = sortedRankArray[0];

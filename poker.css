@@ -1,31 +1,115 @@
 body {
-    background-image: radial-gradient(circle at 29% 55%, hsla(329,0%,99%,0.05) 0%, hsla(329,0%,99%,0.05) 4%,transparent 4%, transparent 44%,transparent 44%, transparent 100%),radial-gradient(circle at 85% 89%, hsla(329,0%,99%,0.05) 0%, hsla(329,0%,99%,0.05) 51%,transparent 51%, transparent 52%,transparent 52%, transparent 100%),radial-gradient(circle at 6% 90%, hsla(329,0%,99%,0.05) 0%, hsla(329,0%,99%,0.05) 53%,transparent 53%, transparent 64%,transparent 64%, transparent 100%),radial-gradient(circle at 35% 75%, hsla(329,0%,99%,0.05) 0%, hsla(329,0%,99%,0.05) 6%,transparent 6%, transparent 98%,transparent 98%, transparent 100%),radial-gradient(circle at 56% 75%, hsla(329,0%,99%,0.05) 0%, hsla(329,0%,99%,0.05) 16%,transparent 16%, transparent 23%,transparent 23%, transparent 100%),radial-gradient(circle at 42% 0%, hsla(329,0%,99%,0.05) 0%, hsla(329,0%,99%,0.05) 3%,transparent 3%, transparent 26%,transparent 26%, transparent 100%),radial-gradient(circle at 29% 28%, hsla(329,0%,99%,0.05) 0%, hsla(329,0%,99%,0.05) 51%,transparent 51%, transparent 75%,transparent 75%, transparent 100%),radial-gradient(circle at 77% 21%, hsla(329,0%,99%,0.05) 0%, hsla(329,0%,99%,0.05) 35%,transparent 35%, transparent 55%,transparent 55%, transparent 100%),radial-gradient(circle at 65% 91%, hsla(329,0%,99%,0.05) 0%, hsla(329,0%,99%,0.05) 46%,transparent 46%, transparent 76%,transparent 76%, transparent 100%),linear-gradient(45deg, rgb(83, 91, 235),rgb(76, 11, 174));
-    min-height:400px;
-    padding:20px;
-    color:#DDDDDD;
-    font-family:verdana;
+  background-image: radial-gradient(
+      circle at 29% 55%,
+      hsla(329, 0%, 99%, 0.05) 0%,
+      hsla(329, 0%, 99%, 0.05) 4%,
+      transparent 4%,
+      transparent 44%,
+      transparent 44%,
+      transparent 100%
+    ),
+    radial-gradient(
+      circle at 85% 89%,
+      hsla(329, 0%, 99%, 0.05) 0%,
+      hsla(329, 0%, 99%, 0.05) 51%,
+      transparent 51%,
+      transparent 52%,
+      transparent 52%,
+      transparent 100%
+    ),
+    radial-gradient(
+      circle at 6% 90%,
+      hsla(329, 0%, 99%, 0.05) 0%,
+      hsla(329, 0%, 99%, 0.05) 53%,
+      transparent 53%,
+      transparent 64%,
+      transparent 64%,
+      transparent 100%
+    ),
+    radial-gradient(
+      circle at 35% 75%,
+      hsla(329, 0%, 99%, 0.05) 0%,
+      hsla(329, 0%, 99%, 0.05) 6%,
+      transparent 6%,
+      transparent 98%,
+      transparent 98%,
+      transparent 100%
+    ),
+    radial-gradient(
+      circle at 56% 75%,
+      hsla(329, 0%, 99%, 0.05) 0%,
+      hsla(329, 0%, 99%, 0.05) 16%,
+      transparent 16%,
+      transparent 23%,
+      transparent 23%,
+      transparent 100%
+    ),
+    radial-gradient(
+      circle at 42% 0%,
+      hsla(329, 0%, 99%, 0.05) 0%,
+      hsla(329, 0%, 99%, 0.05) 3%,
+      transparent 3%,
+      transparent 26%,
+      transparent 26%,
+      transparent 100%
+    ),
+    radial-gradient(
+      circle at 29% 28%,
+      hsla(329, 0%, 99%, 0.05) 0%,
+      hsla(329, 0%, 99%, 0.05) 51%,
+      transparent 51%,
+      transparent 75%,
+      transparent 75%,
+      transparent 100%
+    ),
+    radial-gradient(
+      circle at 77% 21%,
+      hsla(329, 0%, 99%, 0.05) 0%,
+      hsla(329, 0%, 99%, 0.05) 35%,
+      transparent 35%,
+      transparent 55%,
+      transparent 55%,
+      transparent 100%
+    ),
+    radial-gradient(
+      circle at 65% 91%,
+      hsla(329, 0%, 99%, 0.05) 0%,
+      hsla(329, 0%, 99%, 0.05) 46%,
+      transparent 46%,
+      transparent 76%,
+      transparent 76%,
+      transparent 100%
+    ),
+    linear-gradient(45deg, rgb(83, 91, 235), rgb(76, 11, 174));
+  background-size: contain;
+  min-height: 1000px;
+  padding: 20px;
+  color: #dddddd;
+  font-family: verdana;
 }
 
 .card {
   margin: 10px;
-  padding: 10px;
+  padding: 30px;
   background-color: white;
   border-color: black;
   border-style: solid;
-  width: 50px;
+  width: 80px;
+  height: 100px;
   text-align: center;
   border-radius: 8px;
   display: inline-block;
+  box-shadow: 0px 5px 15px grey;
 }
 
 .suit {
   margin: 5px;
-  font-size: 20px;
+  font-size: 45px;
 }
 
 .name {
   margin: 5px;
-  font-size: 24px;
+  font-size: 35px;
   font-weight: bold;
   font-family: sans-serif;
 }
@@ -41,12 +125,15 @@ body {
 .container {
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  background-color: black;
+  justify-content: space-evenly;
+  margin: 10px;
 }
 
 .selected {
   background-color: red;
+  font-size: 20px;
+  text-align: center;
+  margin: 0px;
 }
 
 .button {
