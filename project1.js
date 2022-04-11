@@ -10,6 +10,8 @@
 
 //variables
 let handArray = [];
+let cardSelectedCounter = 0;
+let cardState;
 let credit = 100;
 
 // DESIGNS
@@ -17,10 +19,12 @@ let credit = 100;
 //changes the color and text of button when cards are clicked
 const btn = document.getElementById("button");
 btn.addEventListener("click", () => {
+
   if (btn.value === "Deal") {
     btn.value = "Draw";
     btn.classList.add("red");
   } else {
+    swapCard(array)
     btn.value = "Deal";
     btn.classList.remove("red");
   }
@@ -151,16 +155,14 @@ function getHandArray(array, num) {
   for (let i = 0; i < num; i++) {
     handArray[i] = deck.pop();
   }
-  console.log(handArray);
+  // console.log(handArray);
   return handArray;
 }
 
 // displaying cards on hand
 function displayCards(array) {
   for (let i = 0; i < array.length; i++) {
-    let cardElement = drawCard(array[i]);
-
-    // console.log(cardElement);
+    let cardElement =  drawCard(array[i]);
 
     document.getElementById(`cardContainer${i + 1}`).appendChild(cardElement);
 
@@ -174,21 +176,37 @@ function displayCards(array) {
       if (container.classList.contains("selected")) {
         cardState = "unselected";
         container.classList.remove("selected");
+        cardSelectedCounter -= 1;
 
         // becomes idle status
         array[i].status = "idle";
-        console.log(array[i]);
+        // console.log(array[i]);
+
       } else {
         cardState = "selected";
         container.classList.add("selected");
+        cardSelectedCounter += 1;
 
         // becomes held status
         array[i].status = "held";
-        console.log(array[i]);
+        // console.log(array[i]);
+      }
+
+      // changes the deal/draw button when more than 1 card is highlighted
+      if (cardSelectedCounter >= 1){
+        btn.value = "Draw"
+        btn.classList.add("red");
+
+      } else {
+        btn.value = "Deal";
+        btn.classList.remove("red");
       }
     });
-  }
-  console.log(array);
+    
+  }  
+  console.log("counter: " + cardSelectedCounter)
+  // console.log(array);
+  // console.log(cardState)
 }
 
 // function to swap cards if clicked
@@ -206,9 +224,13 @@ function swapCard(array) {
       array[i] = deck.pop();
     }
     newArray = array;
+
   }
   console.log(newArray);
   displayCards(newArray);
+  let newArrayInfo = getArrayInfo(newArray)
+  checkWin(newArrayInfo)
+  
   return newArray;
 }
 
@@ -242,8 +264,8 @@ function getArrayInfo(array) {
     rankArray.push(array[i].rank);
   }
 
-  console.log(suitArray);
-  console.log(rankArray);
+  // console.log(suitArray);
+  // console.log(rankArray);
 
   // finding similar and unique suit counts
   for (let i = 0; i < array.length; i++) {
@@ -285,8 +307,8 @@ function getArrayInfo(array) {
     }
   }
 
-  console.log(min);
-  console.log(max);
+  // console.log(min);
+  // console.log(max);
   rankDiffSum = max - min;
 
   let arrayInfo = {
@@ -395,15 +417,33 @@ const initGame = () => {
 };
 
 // game logic
+//1. all cards are flipped, showing backside only
+//1.1 Button is deal, click and all cards will be displayed
+//2.1 Select the cards you want to hold
+//2.2 button will change to draw 
+//2.3 Click and it will become deal again
+//2.4 cards will be redisplayed
+//2.5 showing the message and 
+//2.6 credit either will be added or subtracted
+//3. Click deal, and cards
+
+
+
 const deck = shuffleCards(makeDeck());
 let array = getHandArray(deck, 5);
-displayCards(array);
-
+setTimeout (displayCards(array), 5000);
 calcHandScore(array);
+console.log(cardSelectedCounter)
 
 let tempArray = getArrayInfo(array);
-console.log(tempArray);
+// console.log(tempArray);
 checkWin(tempArray);
+
+
+
+
+
+
 
 // ARCHIVED CODES
 // min = sortedRankArray[0];
