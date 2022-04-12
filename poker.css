@@ -82,10 +82,12 @@ body {
     ),
     linear-gradient(45deg, rgb(83, 91, 235), rgb(76, 11, 174));
   background-size: contain;
-  min-height: 1000px;
-  padding: 20px;
+  min-height: 2000px;
+  padding: 30px;
+  margin: 20px;
   color: #dddddd;
   font-family: verdana;
+  display: block;
 }
 
 .card {
@@ -94,8 +96,8 @@ body {
   background-color: white;
   border-color: black;
   border-style: solid;
-  width: 80px;
-  height: 100px;
+  width: 120px;
+  height: 180px;
   text-align: center;
   border-radius: 8px;
   display: inline-block;
@@ -125,6 +127,7 @@ body {
 .container {
   display: flex;
   flex-direction: row;
+  flex: 1;
   justify-content: space-evenly;
   margin: 10px;
 }

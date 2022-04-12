@@ -13,8 +13,10 @@ let handArray = [];
 let cardSelectedCounter = 0;
 let cardState;
 let credit = 100;
-let canStart = "false"
-let canDraw = "false"
+let canStart = "false";
+let canDraw = "false";
+let deck = [];
+let array = [];
 
 // DESIGNS
 
@@ -34,7 +36,6 @@ const btn = document.getElementById("button");
 //play again display
 
 //credit display
-
 
 // HELPER FUNCTIONS //
 
@@ -131,7 +132,6 @@ const makeDeck = () => {
   return newDeck;
 };
 
-
 //drawing cards
 function drawCard(currentCard) {
   const suit = document.createElement("div");
@@ -151,26 +151,6 @@ function drawCard(currentCard) {
   return card;
 }
 
-// draw backside
-function drawCard2(currentCard) {
-  const suit = document.createElement("div");
-  suit.classList.add("suit", currentCard.color);
-  suit.innerHTML = currentCard.symbol;
-
-  const name = document.createElement("div");
-  name.classList.add("name", currentCard.color);
-  name.innerHTML = currentCard.name;
-
-  const card = document.createElement("div");
-  card.classList.add("card");
-
-  card.appendChild(name);
-  card.appendChild(suit);
-
-  return card;
-}
-
-
 // function to get cards on hand
 function getHandArray(array, num) {
   for (let i = 0; i < num; i++) {
@@ -183,78 +163,76 @@ function getHandArray(array, num) {
 // displaying cards on hand
 function displayCards(array) {
   for (let i = 0; i < array.length; i++) {
+    let container = document.getElementById(`cardContainer${i + 1}`);
 
-    let container = document.getElementById(`cardContainer${i + 1}`)
     if (canStart == "false") {
-
+      container.innerHTML = "";
       let backDesign = document.createElement("IMG");
       backDesign.setAttribute(
-      "src",
-      "http://chetart.com/blog/wp-content/uploads/2012/05/playing-card-back.jpg"
-    );
+        "src",
+        "file:///Users/ooizihao/Downloads/Poker%20card%20backside.png"
+      );
       backDesign.setAttribute("width", "200px");
       backDesign.setAttribute("height", "250px");
       backDesign.setAttribute("margin", "30px");
       backDesign.setAttribute("padding", "30px");
       backDesign.setAttribute("alt", "Some really cool pic");
       document.getElementById(`cardContainer${i + 1}`).appendChild(backDesign);
+    }
+    if (canStart == "true") {
+      container.innerHTML = "";
+      let cardElement = drawCard(array[i]);
+      let heldMessage = document.createElement("p");
+      heldMessage.style.margin = "0px";
+      heldMessage.style.marginBottom = "10px";
 
-    } if (canStart == "true") {
-    
-    container.innerHTML = ""
-    let cardElement = drawCard(array[i]);
-    let heldMessage = document.createElement("p");
-    heldMessage.style.margin = "0px";
-    heldMessage.style.marginBottom = "10px";
+      document.getElementById(`cardContainer${i + 1}`).appendChild(cardElement);
+      document.getElementById(`cardContainer${i + 1}`).appendChild(heldMessage);
 
-    document.getElementById(`cardContainer${i + 1}`).appendChild(cardElement);
-    document.getElementById(`cardContainer${i + 1}`).appendChild(heldMessage);
+      // when clicked, it will change the css setting as well as put a note on the array
+      cardElement.addEventListener("click", () => {
+        // change the css setting of the container
+        console.log(`cardContainer${i + 1}`);
 
-    // when clicked, it will change the css setting as well as put a note on the array
-    cardElement.addEventListener("click", () => {
-      // change the css setting of the container
-      console.log(`cardContainer${i + 1}`);
+        // let container = document.getElementById(`cardContainer${i + 1}`);
 
-      // let container = document.getElementById(`cardContainer${i + 1}`);
+        if (container.classList.contains("selected")) {
+          cardState = "unselected";
+          container.classList.remove("selected");
+          heldMessage.innerHTML = "";
+          cardSelectedCounter -= 1;
 
-      if (container.classList.contains("selected")) {
-        cardState = "unselected";
-        container.classList.remove("selected");
-        heldMessage.innerHTML = "";
-        cardSelectedCounter -= 1;
+          // becomes idle status
+          array[i].status = "idle";
+          // console.log(array[i]);
+        } else {
+          cardState = "selected";
+          container.classList.add("selected");
+          heldMessage.innerHTML = "Held";
 
-        // becomes idle status
-        array[i].status = "idle";
-        // console.log(array[i]);
-      } else {
-        cardState = "selected";
-        container.classList.add("selected");
-        heldMessage.innerHTML = "Held";
+          // display "held" message when clicked
+          cardSelectedCounter += 1;
 
-        // display "held" message when clicked
-        cardSelectedCounter += 1;
+          // becomes held status
+          array[i].status = "held";
+          // console.log(array[i]);
+        }
 
-        // becomes held status
-        array[i].status = "held";
-        // console.log(array[i]);
-      }
-
-      // changes the deal/draw button when more than 1 card is highlighted
-      if (cardSelectedCounter >= 1) {
-        btn.value = "Draw";
-        btn.classList.add("red");
-      } else {
-        btn.value = "Deal";
-        btn.classList.remove("red");
-      }
-    });
+        // changes the deal/draw button when more than 1 card is highlighted
+        if (cardSelectedCounter >= 1) {
+          btn.value = "Draw";
+          btn.classList.add("red");
+        } else {
+          btn.value = "Deal";
+          btn.classList.remove("red");
+        }
+      });
     }
   }
   console.log("counter: " + cardSelectedCounter);
   // console.log(array);
   // console.log(cardState)
 }
-
 
 // function to swap cards if clicked
 function swapCard(array, deck) {
@@ -277,9 +255,9 @@ function swapCard(array, deck) {
   let newArrayInfo = getArrayInfo(newArray);
   checkWin(newArrayInfo);
 
+  resetGame();
   return newArray;
 }
-
 
 // function to get all the necessary details
 function getArrayInfo(array) {
@@ -448,32 +426,38 @@ function getMax(array) {
 
 // game initialization
 const initGame = () => {
-
   let deck = shuffleCards(makeDeck());
   let array = getHandArray(deck, 5);
+  btn.value = "Start game";
 
-  if (canStart == "false") {
-    displayCards (array)
-    canStart = "true"
-    console.log(canStart)
+  btn.addEventListener("click", () => {
+    if (canStart == "false") {
+      // displaying cards with back cover
+      displayCards(array);
+      canStart = "true";
+      btn.value = "Flip over!";
+    } else if (canStart == "true") {
+      displayCards(array);
+      btn.value = "Deal";
 
-  } if (canStart == "true") { 
-    btn.addEventListener("click", () => {
-      console.log("passed")
-      displayCards (array)
-      btn.value = "Deal"
-      canDraw = "true"
+      if (btn.value == "Draw" || btn.value == "Deal") {
+        // display cards if swapped
+        let newArray = swapCard(array, deck);
+        let newArrayInfo = getArrayInfo(newArray);
+        checkWin(newArrayInfo);
+      }
+    }
+  });
+};
 
-      if (canDraw == "true") {
-        console.log("can draw now")
-        let newArray = swapCard (array, deck)
-        let newArrayInfo = getArrayInfo(newArray)
-        checkWin(newArrayInfo)
-      }  
-
-    });
-    } 
-  }  
+function resetGame() {
+  canStart = "false";
+  btn.value = "Start game";
+  handArray = [];
+  deck = [];
+  array = [];
+  initGame();
+}
 
 initGame();
 
@@ -489,7 +473,6 @@ initGame();
 
 // displayBackside(5);
 
-
 // game logic
 
 //1. all cards are flipped, showing backside only
@@ -501,8 +484,6 @@ initGame();
 //2.5 showing the message and
 //2.6 credit either will be added or subtracted
 //3. Click deal, and cards
-
-
 
 // ARCHIVED CODES
 // min = sortedRankArray[0];
@@ -518,8 +499,6 @@ initGame();
 // console.log(min);
 // console.log(max);
 // rankDiffSum = max - min;
-
-
 
 // // displaying the back side of card
 // function displayBackside(num) {
@@ -548,3 +527,48 @@ initGame();
 //   console.log(`HandArray score: ${score}`);
 //   return score;
 // }
+
+// // draw backside
+// function drawCard2(currentCard) {
+//   const suit = document.createElement("div");
+//   suit.classList.add("suit", currentCard.color);
+//   suit.innerHTML = currentCard.symbol;
+
+//   const name = document.createElement("div");
+//   name.classList.add("name", currentCard.color);
+//   name.innerHTML = currentCard.name;
+
+//   const card = document.createElement("div");
+//   card.classList.add("card");
+
+//   card.appendChild(name);
+//   card.appendChild(suit);
+
+//   return card;
+// }
+
+// // game initialization
+// const initGame = () => {
+//   let deck = shuffleCards(makeDeck());
+//   let array = getHandArray(deck, 5);
+//   btn.value = "Start game";
+//   let gameState;
+
+//   btn.addEventListener("click", () => {
+//     if (canStart == "false") {
+//       // displaying cards with back cover
+//       displayCards(array);
+//       canStart = "true";
+//       btn.value = "Flip over!";
+
+//     } else if (canStart == "true") {
+//       btn.value = "Deal";
+//       displayCards(array);
+
+//       // display cards if swapped
+//       let newArray = swapCard(array, deck);
+//       let newArrayInfo = getArrayInfo(newArray);
+//       checkWin(newArrayInfo);
+//     }
+//   });
+// };
