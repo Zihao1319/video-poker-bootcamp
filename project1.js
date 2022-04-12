@@ -13,25 +13,28 @@ let handArray = [];
 let cardSelectedCounter = 0;
 let cardState;
 let credit = 100;
+let canStart = "false"
+let canDraw = "false"
 
 // DESIGNS
 
 //changes the color and text of button when cards are clicked
 const btn = document.getElementById("button");
-btn.addEventListener("click", () => {
-  if (btn.value === "Deal") {
-    btn.value = "Draw";
-    btn.classList.add("red");
-  } else {
-    swapCard(array);
-    btn.value = "Deal";
-    btn.classList.remove("red");
-  }
-});
+// btn.addEventListener("click", () => {
+//   if (btn.value === "Deal") {
+//     btn.value = "Draw";
+//     btn.classList.add("red");
+//   } else {
+//     swapCard(array);
+//     btn.value = "Deal";
+//     btn.classList.remove("red");
+//   }
+// });
 
 //play again display
 
 //credit display
+
 
 // HELPER FUNCTIONS //
 
@@ -128,6 +131,7 @@ const makeDeck = () => {
   return newDeck;
 };
 
+
 //drawing cards
 function drawCard(currentCard) {
   const suit = document.createElement("div");
@@ -166,10 +170,11 @@ function drawCard2(currentCard) {
   return card;
 }
 
+
 // function to get cards on hand
 function getHandArray(array, num) {
   for (let i = 0; i < num; i++) {
-    handArray[i] = deck.pop();
+    handArray[i] = array.pop();
   }
   // console.log(handArray);
   return handArray;
@@ -178,6 +183,25 @@ function getHandArray(array, num) {
 // displaying cards on hand
 function displayCards(array) {
   for (let i = 0; i < array.length; i++) {
+
+    let container = document.getElementById(`cardContainer${i + 1}`)
+    if (canStart == "false") {
+
+      let backDesign = document.createElement("IMG");
+      backDesign.setAttribute(
+      "src",
+      "http://chetart.com/blog/wp-content/uploads/2012/05/playing-card-back.jpg"
+    );
+      backDesign.setAttribute("width", "200px");
+      backDesign.setAttribute("height", "250px");
+      backDesign.setAttribute("margin", "30px");
+      backDesign.setAttribute("padding", "30px");
+      backDesign.setAttribute("alt", "Some really cool pic");
+      document.getElementById(`cardContainer${i + 1}`).appendChild(backDesign);
+
+    } if (canStart == "true") {
+    
+    container.innerHTML = ""
     let cardElement = drawCard(array[i]);
     let heldMessage = document.createElement("p");
     heldMessage.style.margin = "0px";
@@ -191,7 +215,7 @@ function displayCards(array) {
       // change the css setting of the container
       console.log(`cardContainer${i + 1}`);
 
-      let container = document.getElementById(`cardContainer${i + 1}`);
+      // let container = document.getElementById(`cardContainer${i + 1}`);
 
       if (container.classList.contains("selected")) {
         cardState = "unselected";
@@ -224,31 +248,16 @@ function displayCards(array) {
         btn.classList.remove("red");
       }
     });
+    }
   }
   console.log("counter: " + cardSelectedCounter);
   // console.log(array);
   // console.log(cardState)
 }
 
-function displayBackside(num) {
-  for (let i = 0; i < num; i++) {
-    let backDesign = document.createElement("IMG");
-    backDesign.setAttribute(
-      "src",
-      "http://chetart.com/blog/wp-content/uploads/2012/05/playing-card-back.jpg"
-    );
-    backDesign.setAttribute("width", "200px");
-    backDesign.setAttribute("height", "250px");
-    backDesign.setAttribute("margin", "30px");
-    backDesign.setAttribute("padding", "30px");
-    backDesign.setAttribute("alt", "Some really cool pic");
-    document.getElementById(`cardContainer${i + 1}`).appendChild(backDesign);
-    console.log("passed");
-  }
-}
 
 // function to swap cards if clicked
-function swapCard(array) {
+function swapCard(array, deck) {
   let newArray = [];
   for (let i = 0; i < array.length; i++) {
     // emptying existing content
@@ -271,19 +280,10 @@ function swapCard(array) {
   return newArray;
 }
 
-// function to assess the scores (calculatehand)
-function calcHandScore(array) {
-  let score = 0;
-  for (let i = 0; i < array.length; i++) {
-    score += array[i].rank;
-  }
-  console.log(`HandArray score: ${score}`);
-  return score;
-}
 
 // function to get all the necessary details
 function getArrayInfo(array) {
-  console.log(array);
+  // console.log(array);
 
   // finding the total cards with same suit
   let uniqueSuitCount = 0;
@@ -448,12 +448,50 @@ function getMax(array) {
 
 // game initialization
 const initGame = () => {
-  const deck = shuffleCards(makeDeck());
-  getHandArray(deck, 5);
-  displayCards(array);
-};
+
+  let deck = shuffleCards(makeDeck());
+  let array = getHandArray(deck, 5);
+
+  if (canStart == "false") {
+    displayCards (array)
+    canStart = "true"
+    console.log(canStart)
+
+  } if (canStart == "true") { 
+    btn.addEventListener("click", () => {
+      console.log("passed")
+      displayCards (array)
+      btn.value = "Deal"
+      canDraw = "true"
+
+      if (canDraw == "true") {
+        console.log("can draw now")
+        let newArray = swapCard (array, deck)
+        let newArrayInfo = getArrayInfo(newArray)
+        checkWin(newArrayInfo)
+      }  
+
+    });
+    } 
+  }  
+
+initGame();
+
+// const deck = shuffleCards(makeDeck());
+// let array = getHandArray(deck, 5);
+// displayCards(array);
+// calcHandScore(array);
+// console.log(cardSelectedCounter);
+
+// let tempArray = getArrayInfo(array);
+// // console.log(tempArray);
+// checkWin(tempArray);
+
+// displayBackside(5);
+
 
 // game logic
+
 //1. all cards are flipped, showing backside only
 //1.1 Button is deal, click and all cards will be displayed
 //2.1 Select the cards you want to hold
@@ -464,17 +502,7 @@ const initGame = () => {
 //2.6 credit either will be added or subtracted
 //3. Click deal, and cards
 
-const deck = shuffleCards(makeDeck());
-let array = getHandArray(deck, 5);
-displayCards(array);
-calcHandScore(array);
-console.log(cardSelectedCounter);
 
-let tempArray = getArrayInfo(array);
-// console.log(tempArray);
-checkWin(tempArray);
-
-// displayBackside(5);
 
 // ARCHIVED CODES
 // min = sortedRankArray[0];
@@ -490,3 +518,33 @@ checkWin(tempArray);
 // console.log(min);
 // console.log(max);
 // rankDiffSum = max - min;
+
+
+
+// // displaying the back side of card
+// function displayBackside(num) {
+//   for (let i = 0; i < num; i++) {
+//     let backDesign = document.createElement("IMG");
+//     backDesign.setAttribute(
+//       "src",
+//       "http://chetart.com/blog/wp-content/uploads/2012/05/playing-card-back.jpg"
+//     );
+//     backDesign.setAttribute("width", "200px");
+//     backDesign.setAttribute("height", "250px");
+//     backDesign.setAttribute("margin", "30px");
+//     backDesign.setAttribute("padding", "30px");
+//     backDesign.setAttribute("alt", "Some really cool pic");
+//     document.getElementById(`cardContainer${i + 1}`).appendChild(backDesign);
+//     // console.log("passed");
+//   }
+// }
+
+// // function to assess the scores (calculatehand)
+// function calcHandScore(array) {
+//   let score = 0;
+//   for (let i = 0; i < array.length; i++) {
+//     score += array[i].rank;
+//   }
+//   console.log(`HandArray score: ${score}`);
+//   return score;
+// }
