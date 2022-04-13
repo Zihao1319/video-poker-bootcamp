@@ -163,23 +163,8 @@ function getHandArray(array, num) {
 // displaying cards on hand
 function displayCards(array) {
   for (let i = 0; i < array.length; i++) {
-    let container = document.getElementById(`cardContainer${i + 1}`);
+      let container = document.getElementById(`cardContainer${i + 1}`);
 
-    if (canStart == "false") {
-      container.innerHTML = "";
-      let backDesign = document.createElement("IMG");
-      backDesign.setAttribute(
-        "src",
-        "file:///Users/ooizihao/Downloads/Poker%20card%20backside.png"
-      );
-      backDesign.setAttribute("width", "200px");
-      backDesign.setAttribute("height", "250px");
-      backDesign.setAttribute("margin", "30px");
-      backDesign.setAttribute("padding", "30px");
-      backDesign.setAttribute("alt", "Some really cool pic");
-      document.getElementById(`cardContainer${i + 1}`).appendChild(backDesign);
-    }
-    if (canStart == "true") {
       container.innerHTML = "";
       let cardElement = drawCard(array[i]);
       let heldMessage = document.createElement("p");
@@ -219,6 +204,8 @@ function displayCards(array) {
         }
 
         // changes the deal/draw button when more than 1 card is highlighted
+
+        if (btn.value !== "Play again") {
         if (cardSelectedCounter >= 1) {
           btn.value = "Draw";
           btn.classList.add("red");
@@ -226,12 +213,34 @@ function displayCards(array) {
           btn.value = "Deal";
           btn.classList.remove("red");
         }
+      }
       });
     }
-  }
+  
   console.log("counter: " + cardSelectedCounter);
   // console.log(array);
   // console.log(cardState)
+}
+
+// Cards flipped back
+function flipBack () {
+
+  for (let i = 0; i < 5; i++) {
+    let container = document.getElementById(`cardContainer${i + 1}`)
+    container.innerHTML = "";
+
+    let backDesign = document.createElement("IMG");
+    backDesign.setAttribute(
+      "src",
+      "file:///Users/ooizihao/Downloads/Poker%20card%20backside.png"
+    );
+    backDesign.setAttribute("width", "200px");
+    backDesign.setAttribute("height", "250px");
+    backDesign.setAttribute("margin", "30px");
+    backDesign.setAttribute("padding", "30px");
+    backDesign.setAttribute("alt", "Some really cool pic");
+    document.getElementById(`cardContainer${i + 1}`).appendChild(backDesign);
+  }
 }
 
 // function to swap cards if clicked
@@ -254,9 +263,8 @@ function swapCard(array, deck) {
   displayCards(newArray);
   let newArrayInfo = getArrayInfo(newArray);
   checkWin(newArrayInfo);
-
-  resetGame();
-  return newArray;
+  btn.value = "Play again"
+  // return newArray;
 }
 
 // function to get all the necessary details
@@ -270,7 +278,6 @@ function getArrayInfo(array) {
   let rankDiffSum = 0;
   let suitArray = [];
   let rankArray = [];
-  let sortedRankArray = [];
   let suitArrayTally = {};
   let rankArrayTally = {};
 
@@ -426,36 +433,37 @@ function getMax(array) {
 
 // game initialization
 const initGame = () => {
+  canStart = "false"
   let deck = shuffleCards(makeDeck());
   let array = getHandArray(deck, 5);
+  flipBack();
   btn.value = "Start game";
 
   btn.addEventListener("click", () => {
-    if (canStart == "false") {
-      // displaying cards with back cover
-      displayCards(array);
-      canStart = "true";
-      btn.value = "Flip over!";
-    } else if (canStart == "true") {
-      displayCards(array);
-      btn.value = "Deal";
+    canStart = "true"
 
-      if (btn.value == "Draw" || btn.value == "Deal") {
-        // display cards if swapped
-        let newArray = swapCard(array, deck);
-        let newArrayInfo = getArrayInfo(newArray);
-        checkWin(newArrayInfo);
-      }
+    if (btn.value == "Start game") {
+      displayCards(array)
+      btn.value = "Deal"
+      // displaying cards with back cover
+      
+    } else if (btn.value == "Deal" || btn.value == "Draw") {
+      swapCard(array, deck);
+
+    } else if (btn.value == "Play again") {
+      resetGame();
     }
+  
   });
 };
 
 function resetGame() {
-  canStart = "false";
-  btn.value = "Start game";
   handArray = [];
   deck = [];
   array = [];
+  btn.value = "Start game"
+  cardSelectedCounter = 0;
+  canStart = "false"
   initGame();
 }
 
