@@ -11,27 +11,16 @@
 //variables
 let handArray = [];
 let cardSelectedCounter = 0;
-let cardState;
 let credit = 100;
 let canStart = "false";
-let canDraw = "false";
 
 // DESIGNS
 
+//message board
+const message = document.getElementById("displaymessage");
+
 //changes the color and text of button when cards are clicked
 const btn = document.getElementById("button");
-// btn.addEventListener("click", () => {
-//   if (btn.value === "Deal") {
-//     btn.value = "Draw";
-//     btn.classList.add("red");
-//   } else {
-//     swapCard(array);
-//     btn.value = "Deal";
-//     btn.classList.remove("red");
-//   }
-// });
-
-//play again display
 
 //credit display
 
@@ -173,37 +162,37 @@ function displayCards(array) {
     document.getElementById(`cardContainer${i + 1}`).appendChild(heldMessage);
 
     // when clicked, it will change the css setting as well as put a note on the array
+
     cardElement.addEventListener("click", () => {
       // change the css setting of the container
       console.log(`cardContainer${i + 1}`);
+      console.log(canStart);
 
-      // let container = document.getElementById(`cardContainer${i + 1}`);
+      if (canStart == "true") {
+        if (container.classList.contains("selected")) {
+          cardState = "unselected";
+          container.classList.remove("selected");
+          heldMessage.innerHTML = "";
+          cardSelectedCounter -= 1;
 
-      if (container.classList.contains("selected")) {
-        cardState = "unselected";
-        container.classList.remove("selected");
-        heldMessage.innerHTML = "";
-        cardSelectedCounter -= 1;
+          // becomes idle status
+          array[i].status = "idle";
+          // console.log(array[i]);
+        } else {
+          cardState = "selected";
+          container.classList.add("selected");
+          heldMessage.innerHTML = "Held";
 
-        // becomes idle status
-        array[i].status = "idle";
-        // console.log(array[i]);
-      } else {
-        cardState = "selected";
-        container.classList.add("selected");
-        heldMessage.innerHTML = "Held";
+          // display "held" message when clicked
+          cardSelectedCounter += 1;
 
-        // display "held" message when clicked
-        cardSelectedCounter += 1;
+          // becomes held status
+          array[i].status = "held";
+          // console.log(array[i]);
+        }
 
-        // becomes held status
-        array[i].status = "held";
-        // console.log(array[i]);
-      }
-
-      // changes the deal/draw button when more than 1 card is highlighted
-
-      if (btn.value !== "Play again") {
+        // changes the deal/draw button when more than 1 card is highlighted
+        // if (btn.value !== "Play again") {
         if (cardSelectedCounter >= 1) {
           btn.value = "Draw";
           btn.classList.add("red");
@@ -243,6 +232,7 @@ function flipBack() {
 // function to swap cards if clicked
 function swapCard(array, deck) {
   let newArray = [];
+  message.innerHTML = "";
   for (let i = 0; i < array.length; i++) {
     // emptying existing content
     let container = document.getElementById(`cardContainer${i + 1}`);
@@ -257,12 +247,12 @@ function swapCard(array, deck) {
     newArray = array;
   }
   console.log(newArray);
-
   displayCards(newArray);
   let newArrayInfo = getArrayInfo(newArray);
   checkWin(newArrayInfo);
+
+  // changes the button sign
   btn.value = "Play again";
-  // return newArray;
 }
 
 // function to get all the necessary details
@@ -361,15 +351,22 @@ function checkWin(array) {
 
       if (totalRank == 47) {
         // royal flush
+        message.innerHTML = "Royal Flush!!";
         console.log("royal flush");
       } else if (totalRank == 15) {
         // straight flush with ace
+        message.innerHTML = "Straight flush with ace!";
         console.log("straight flush with ace");
+      } else {
+        message.innerHTML = "Try again!";
+        console.log("none of the above");
       }
     } else if (rankDiffSum == 4) {
       // straight flush without ace
+      message.innerHTML = "Straight flush!";
       console.log("straight flush without ace");
     } else {
+      message.innerHTML = "Flush!";
       console.log("flush");
     }
   } else if (uniqueSuitCount !== 1) {
@@ -378,25 +375,39 @@ function checkWin(array) {
 
       if (maxNum == 4) {
         // 4 of a kind,
+        message.innerHTML = "4 of a kind!";
         console.log("4 of a kind");
       } else if (maxNum == 3) {
         // full house
+        message.innerHTML = "Full house!";
         console.log("full house");
+      } else {
+        message.innerHTML = "Try again!";
+        console.log("none of the above");
       }
     } else if (uniqueRankCount == 3) {
       // 3 of a kind, 2 pairs
 
       if (maxNum == 3) {
         // 3 of a kind
+        message.innerHTML = "3 of a kind";
         console.log("3 of a kind");
       } else if (maxNum == 2) {
         // 2 pairs
+        message.innerHTML = "2 pairs!";
         console.log("2 pairs");
+      } else {
+        message.innerHTML = "Try again!";
+        console.log("none of the above");
       }
     } else if (uniqueRankCount == 4) {
       // 1 pair only
       if (maxNum == 2) {
+        message.innerHTML = "1 pair!";
         console.log("1 pair only");
+      } else {
+        message.innerHTML = "Try again!";
+        console.log("none of the above");
       }
     } else if (uniqueRankCount == 5) {
       // only straight
@@ -406,15 +417,24 @@ function checkWin(array) {
 
         if (totalRank == 47 || totalRank == 15) {
           // straight
+          message.innerHTML = "Straight!";
           console.log("straight");
+        } else {
+          message.innerHTML = "Try again!";
+          console.log("none of the above");
         }
       } else if (rankDiffSum == 4) {
         // straight without ace
+        message.innerHTML = "Straight!";
         console.log("straight without ace");
+      } else {
+        message.innerHTML = "Try again!";
+        console.log("none of the above");
       }
+    } else {
+      message.innerHTML = "Try again!";
+      console.log("none of the above");
     }
-  } else {
-    console.log("none of the above");
   }
 }
 
@@ -429,19 +449,20 @@ function getMax(array) {
   return sortedArray[0];
 }
 
-// game initialization
+// game logic flow
 const initGame = () => {
+  message.innerHTML = "Press Start game to begin!";
   let deck = [];
   let array = [];
-  canStart = "false";
   flipBack();
   btn.value = "Start game";
+  canStart = "false";
 
   btn.addEventListener("click", () => {
     canStart = "true";
 
     if (btn.value == "Start game") {
-      console.log("game started");
+      message.innerHTML = "";
       deck = shuffleCards(makeDeck());
       array = getHandArray(deck, 5);
       displayCards(array);
@@ -451,6 +472,9 @@ const initGame = () => {
     } else if (btn.value == "Deal" || btn.value == "Draw") {
       swapCard(array, deck);
       console.log("cards swapped");
+      canStart = "false";
+
+      //resetting game
     } else if (btn.value == "Play again") {
       resetGame();
     }
@@ -458,10 +482,11 @@ const initGame = () => {
 };
 
 function resetGame() {
+  message.innerHTML = "Press Start game to begin!";
   console.log("game reset");
   handArray = [];
   let deck = [];
-  let array = [];
+  letarray = [];
   flipBack();
   btn.value = "Start game";
   cardSelectedCounter = 0;
