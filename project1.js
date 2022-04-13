@@ -15,8 +15,6 @@ let cardState;
 let credit = 100;
 let canStart = "false";
 let canDraw = "false";
-let deck = [];
-let array = [];
 
 // DESIGNS
 
@@ -163,49 +161,49 @@ function getHandArray(array, num) {
 // displaying cards on hand
 function displayCards(array) {
   for (let i = 0; i < array.length; i++) {
-      let container = document.getElementById(`cardContainer${i + 1}`);
+    let container = document.getElementById(`cardContainer${i + 1}`);
 
-      container.innerHTML = "";
-      let cardElement = drawCard(array[i]);
-      let heldMessage = document.createElement("p");
-      heldMessage.style.margin = "0px";
-      heldMessage.style.marginBottom = "10px";
+    container.innerHTML = "";
+    let cardElement = drawCard(array[i]);
+    let heldMessage = document.createElement("p");
+    heldMessage.style.margin = "0px";
+    heldMessage.style.marginBottom = "10px";
 
-      document.getElementById(`cardContainer${i + 1}`).appendChild(cardElement);
-      document.getElementById(`cardContainer${i + 1}`).appendChild(heldMessage);
+    document.getElementById(`cardContainer${i + 1}`).appendChild(cardElement);
+    document.getElementById(`cardContainer${i + 1}`).appendChild(heldMessage);
 
-      // when clicked, it will change the css setting as well as put a note on the array
-      cardElement.addEventListener("click", () => {
-        // change the css setting of the container
-        console.log(`cardContainer${i + 1}`);
+    // when clicked, it will change the css setting as well as put a note on the array
+    cardElement.addEventListener("click", () => {
+      // change the css setting of the container
+      console.log(`cardContainer${i + 1}`);
 
-        // let container = document.getElementById(`cardContainer${i + 1}`);
+      // let container = document.getElementById(`cardContainer${i + 1}`);
 
-        if (container.classList.contains("selected")) {
-          cardState = "unselected";
-          container.classList.remove("selected");
-          heldMessage.innerHTML = "";
-          cardSelectedCounter -= 1;
+      if (container.classList.contains("selected")) {
+        cardState = "unselected";
+        container.classList.remove("selected");
+        heldMessage.innerHTML = "";
+        cardSelectedCounter -= 1;
 
-          // becomes idle status
-          array[i].status = "idle";
-          // console.log(array[i]);
-        } else {
-          cardState = "selected";
-          container.classList.add("selected");
-          heldMessage.innerHTML = "Held";
+        // becomes idle status
+        array[i].status = "idle";
+        // console.log(array[i]);
+      } else {
+        cardState = "selected";
+        container.classList.add("selected");
+        heldMessage.innerHTML = "Held";
 
-          // display "held" message when clicked
-          cardSelectedCounter += 1;
+        // display "held" message when clicked
+        cardSelectedCounter += 1;
 
-          // becomes held status
-          array[i].status = "held";
-          // console.log(array[i]);
-        }
+        // becomes held status
+        array[i].status = "held";
+        // console.log(array[i]);
+      }
 
-        // changes the deal/draw button when more than 1 card is highlighted
+      // changes the deal/draw button when more than 1 card is highlighted
 
-        if (btn.value !== "Play again") {
+      if (btn.value !== "Play again") {
         if (cardSelectedCounter >= 1) {
           btn.value = "Draw";
           btn.classList.add("red");
@@ -214,19 +212,18 @@ function displayCards(array) {
           btn.classList.remove("red");
         }
       }
-      });
-    }
-  
+    });
+  }
+
   console.log("counter: " + cardSelectedCounter);
   // console.log(array);
   // console.log(cardState)
 }
 
 // Cards flipped back
-function flipBack () {
-
+function flipBack() {
   for (let i = 0; i < 5; i++) {
-    let container = document.getElementById(`cardContainer${i + 1}`)
+    let container = document.getElementById(`cardContainer${i + 1}`);
     container.innerHTML = "";
 
     let backDesign = document.createElement("IMG");
@@ -260,10 +257,11 @@ function swapCard(array, deck) {
     newArray = array;
   }
   console.log(newArray);
+
   displayCards(newArray);
   let newArrayInfo = getArrayInfo(newArray);
   checkWin(newArrayInfo);
-  btn.value = "Play again"
+  btn.value = "Play again";
   // return newArray;
 }
 
@@ -433,38 +431,41 @@ function getMax(array) {
 
 // game initialization
 const initGame = () => {
-  canStart = "false"
-  let deck = shuffleCards(makeDeck());
-  let array = getHandArray(deck, 5);
+  let deck = [];
+  let array = [];
+  canStart = "false";
   flipBack();
   btn.value = "Start game";
 
   btn.addEventListener("click", () => {
-    canStart = "true"
+    canStart = "true";
 
     if (btn.value == "Start game") {
-      displayCards(array)
-      btn.value = "Deal"
+      console.log("game started");
+      deck = shuffleCards(makeDeck());
+      array = getHandArray(deck, 5);
+      displayCards(array);
+      btn.value = "Deal";
+
       // displaying cards with back cover
-      
     } else if (btn.value == "Deal" || btn.value == "Draw") {
       swapCard(array, deck);
-
+      console.log("cards swapped");
     } else if (btn.value == "Play again") {
       resetGame();
     }
-  
   });
 };
 
 function resetGame() {
+  console.log("game reset");
   handArray = [];
-  deck = [];
-  array = [];
-  btn.value = "Start game"
+  let deck = [];
+  let array = [];
+  flipBack();
+  btn.value = "Start game";
   cardSelectedCounter = 0;
-  canStart = "false"
-  initGame();
+  canStart = "false";
 }
 
 initGame();
