@@ -23,8 +23,27 @@ const message = document.getElementById("displaymessage");
 const btn = document.getElementById("button");
 
 //credit display
+let creditDisplay = document.getElementById("creditScoreBoard")
+
+// Score table for each hand
+const scoreTable = {
+  "royalFlush" : 250,
+  "straightFlush" : 50,
+  "fourKind" : 25,
+  "fullHouse" : 9,
+  "flush" : 6,
+  "straight" : 4,
+  "threeKind" : 3,
+  "twoPairs" : 2,
+  "onePair" : 1,
+  
+}
 
 // HELPER FUNCTIONS //
+function getScore (handType) {
+  let score = scoreTable[handType]
+  return score
+}
 
 // Get a random index ranging from 0 (inclusive) to max (exclusive).
 const getRandomIndex = (max) => Math.floor(Math.random() * max);
@@ -352,23 +371,32 @@ function checkWin(array) {
       if (totalRank == 47) {
         // royal flush
         message.innerHTML = "Royal Flush!!";
+        credit += getScore("royalFlush")
         console.log("royal flush");
+
       } else if (totalRank == 15) {
         // straight flush with ace
         message.innerHTML = "Straight flush with ace!";
+        credit += getScore("straightFlush")
         console.log("straight flush with ace");
+
       } else {
         message.innerHTML = "Try again!";
+        credit -= 1;
         console.log("none of the above");
       }
     } else if (rankDiffSum == 4) {
       // straight flush without ace
       message.innerHTML = "Straight flush!";
+      credit += getScore("straightFlush")
       console.log("straight flush without ace");
+
     } else {
       message.innerHTML = "Flush!";
+      credit += getScore("flush")
       console.log("flush");
     }
+
   } else if (uniqueSuitCount !== 1) {
     if (uniqueRankCount == 2) {
       // 4 of a kind, full house
@@ -376,13 +404,18 @@ function checkWin(array) {
       if (maxNum == 4) {
         // 4 of a kind,
         message.innerHTML = "4 of a kind!";
+        credit += getScore("fourKind")
         console.log("4 of a kind");
+
       } else if (maxNum == 3) {
         // full house
         message.innerHTML = "Full house!";
+        credit += getScore("fullHouse")
         console.log("full house");
+
       } else {
         message.innerHTML = "Try again!";
+        credit -= 1;
         console.log("none of the above");
       }
     } else if (uniqueRankCount == 3) {
@@ -391,24 +424,33 @@ function checkWin(array) {
       if (maxNum == 3) {
         // 3 of a kind
         message.innerHTML = "3 of a kind";
+        credit += getScore("threeKind")
         console.log("3 of a kind");
+
       } else if (maxNum == 2) {
         // 2 pairs
         message.innerHTML = "2 pairs!";
+        credit += getScore("twoPairs")
         console.log("2 pairs");
+
       } else {
         message.innerHTML = "Try again!";
+        credit -= 1;
         console.log("none of the above");
       }
     } else if (uniqueRankCount == 4) {
       // 1 pair only
       if (maxNum == 2) {
         message.innerHTML = "1 pair!";
+        credit += getScore("onePair")
         console.log("1 pair only");
+
       } else {
         message.innerHTML = "Try again!";
+        credit -= 1;
         console.log("none of the above");
       }
+
     } else if (uniqueRankCount == 5) {
       // only straight
 
@@ -418,21 +460,28 @@ function checkWin(array) {
         if (totalRank == 47 || totalRank == 15) {
           // straight
           message.innerHTML = "Straight!";
+          credit += getScore("straight")
           console.log("straight");
+
         } else {
           message.innerHTML = "Try again!";
+          credit -= 1;
           console.log("none of the above");
         }
       } else if (rankDiffSum == 4) {
         // straight without ace
         message.innerHTML = "Straight!";
+        credit += getScore("straight")
         console.log("straight without ace");
+
       } else {
         message.innerHTML = "Try again!";
+        credit -= 1;
         console.log("none of the above");
       }
     } else {
       message.innerHTML = "Try again!";
+      credit -= 1;
       console.log("none of the above");
     }
   }
@@ -451,6 +500,7 @@ function getMax(array) {
 
 // game logic flow
 const initGame = () => {
+  creditDisplay.innerHTML = credit;
   message.innerHTML = "Press Start game to begin!";
   let deck = [];
   let array = [];
@@ -482,6 +532,7 @@ const initGame = () => {
 };
 
 function resetGame() {
+  credit;
   message.innerHTML = "Press Start game to begin!";
   console.log("game reset");
   handArray = [];
