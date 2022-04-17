@@ -1,13 +1,5 @@
 // game design put here
 
-// 1) At the beginning, all the cards are flipped backwards. Deal/draw button on bottom right
-// 2) Once the player click on the deal button, the cards will be shown. The deal button will also change to draw button
-// 3) The user can choose to hold the card by clicking the card, once clicked, it will become bigger and a held sign will be shown above, if the click again, it will revert to original and the held sign will be gone
-// 4) When the user click the draw button, it will draw the remaining the cards that is not held, and display either winning or losing
-// 5) at the same time, the points will either increase or decrease
-// 5) at the same time, draw button changes to deal button again
-// 6) User click the deal button and the game will restart again
-
 //variables
 let handArray = [];
 let cardSelectedCounter = 0;
@@ -23,26 +15,25 @@ const message = document.getElementById("displaymessage");
 const btn = document.getElementById("button");
 
 //credit display
-let creditDisplay = document.getElementById("creditScoreBoard")
+let creditDisplay = document.getElementById("creditScoreBoard");
 
 // Score table for each hand
 const scoreTable = {
-  "royalFlush" : 250,
-  "straightFlush" : 50,
-  "fourKind" : 25,
-  "fullHouse" : 9,
-  "flush" : 6,
-  "straight" : 4,
-  "threeKind" : 3,
-  "twoPairs" : 2,
-  "onePair" : 1,
-  
-}
+  royalFlush: 250,
+  straightFlush: 50,
+  fourKind: 25,
+  fullHouse: 9,
+  flush: 6,
+  straight: 4,
+  threeKind: 3,
+  twoPairs: 2,
+  onePair: 1,
+};
 
 // HELPER FUNCTIONS //
-function getScore (handType) {
-  let score = scoreTable[handType]
-  return score
+function getScore(handType) {
+  let score = scoreTable[handType];
+  return score;
 }
 
 // Get a random index ranging from 0 (inclusive) to max (exclusive).
@@ -232,6 +223,7 @@ function displayCards(array) {
 function flipBack() {
   for (let i = 0; i < 5; i++) {
     let container = document.getElementById(`cardContainer${i + 1}`);
+
     container.innerHTML = "";
 
     let backDesign = document.createElement("IMG");
@@ -239,11 +231,21 @@ function flipBack() {
       "src",
       "file:///Users/ooizihao/Downloads/Poker%20card%20backside.png"
     );
-    backDesign.setAttribute("width", "200px");
-    backDesign.setAttribute("height", "250px");
-    backDesign.setAttribute("margin", "30px");
-    backDesign.setAttribute("padding", "30px");
+
+    backDesign.setAttribute("align-items", "center");
     backDesign.setAttribute("alt", "Some really cool pic");
+    const mediaQuery = window.matchMedia("(max-width: 700px)");
+
+    if (mediaQuery.matches) {
+      backDesign.setAttribute("width", "95px");
+      backDesign.setAttribute("height", "auto");
+    } else {
+      backDesign.setAttribute("width", "200px");
+      backDesign.setAttribute("height", "auto");
+
+      // backDesign.setAttribute("margin", "30px");
+      // backDesign.setAttribute("padding", "30px");
+    }
     document.getElementById(`cardContainer${i + 1}`).appendChild(backDesign);
   }
 }
@@ -371,15 +373,13 @@ function checkWin(array) {
       if (totalRank == 47) {
         // royal flush
         message.innerHTML = "Royal Flush!!";
-        credit += getScore("royalFlush")
+        credit += getScore("royalFlush");
         console.log("royal flush");
-
       } else if (totalRank == 15) {
         // straight flush with ace
         message.innerHTML = "Straight flush with ace!";
-        credit += getScore("straightFlush")
+        credit += getScore("straightFlush");
         console.log("straight flush with ace");
-
       } else {
         message.innerHTML = "Try again!";
         credit -= 1;
@@ -388,15 +388,13 @@ function checkWin(array) {
     } else if (rankDiffSum == 4) {
       // straight flush without ace
       message.innerHTML = "Straight flush!";
-      credit += getScore("straightFlush")
+      credit += getScore("straightFlush");
       console.log("straight flush without ace");
-
     } else {
       message.innerHTML = "Flush!";
-      credit += getScore("flush")
+      credit += getScore("flush");
       console.log("flush");
     }
-
   } else if (uniqueSuitCount !== 1) {
     if (uniqueRankCount == 2) {
       // 4 of a kind, full house
@@ -404,15 +402,13 @@ function checkWin(array) {
       if (maxNum == 4) {
         // 4 of a kind,
         message.innerHTML = "4 of a kind!";
-        credit += getScore("fourKind")
+        credit += getScore("fourKind");
         console.log("4 of a kind");
-
       } else if (maxNum == 3) {
         // full house
         message.innerHTML = "Full house!";
-        credit += getScore("fullHouse")
+        credit += getScore("fullHouse");
         console.log("full house");
-
       } else {
         message.innerHTML = "Try again!";
         credit -= 1;
@@ -424,15 +420,13 @@ function checkWin(array) {
       if (maxNum == 3) {
         // 3 of a kind
         message.innerHTML = "3 of a kind";
-        credit += getScore("threeKind")
+        credit += getScore("threeKind");
         console.log("3 of a kind");
-
       } else if (maxNum == 2) {
         // 2 pairs
         message.innerHTML = "2 pairs!";
-        credit += getScore("twoPairs")
+        credit += getScore("twoPairs");
         console.log("2 pairs");
-
       } else {
         message.innerHTML = "Try again!";
         credit -= 1;
@@ -442,15 +436,13 @@ function checkWin(array) {
       // 1 pair only
       if (maxNum == 2) {
         message.innerHTML = "1 pair!";
-        credit += getScore("onePair")
+        credit += getScore("onePair");
         console.log("1 pair only");
-
       } else {
         message.innerHTML = "Try again!";
         credit -= 1;
         console.log("none of the above");
       }
-
     } else if (uniqueRankCount == 5) {
       // only straight
 
@@ -460,9 +452,8 @@ function checkWin(array) {
         if (totalRank == 47 || totalRank == 15) {
           // straight
           message.innerHTML = "Straight!";
-          credit += getScore("straight")
+          credit += getScore("straight");
           console.log("straight");
-
         } else {
           message.innerHTML = "Try again!";
           credit -= 1;
@@ -471,9 +462,8 @@ function checkWin(array) {
       } else if (rankDiffSum == 4) {
         // straight without ace
         message.innerHTML = "Straight!";
-        credit += getScore("straight")
+        credit += getScore("straight");
         console.log("straight without ace");
-
       } else {
         message.innerHTML = "Try again!";
         credit -= 1;
@@ -500,7 +490,8 @@ function getMax(array) {
 
 // game logic flow
 const initGame = () => {
-  creditDisplay.innerHTML = credit;
+  credit;
+  creditDisplay.innerHTML = `Available credit: ${credit}`;
   message.innerHTML = "Press Start game to begin!";
   let deck = [];
   let array = [];
@@ -512,8 +503,9 @@ const initGame = () => {
     canStart = "true";
 
     if (btn.value == "Start game") {
-      message.innerHTML = "";
+      message.innerHTML = "Select cards to be held or press deal";
       deck = shuffleCards(makeDeck());
+      console.log(deck);
       array = getHandArray(deck, 5);
       displayCards(array);
       btn.value = "Deal";
@@ -523,6 +515,7 @@ const initGame = () => {
       swapCard(array, deck);
       console.log("cards swapped");
       canStart = "false";
+      creditDisplay.innerHTML = `Available credit: ${credit}`;
 
       //resetting game
     } else if (btn.value == "Play again") {
