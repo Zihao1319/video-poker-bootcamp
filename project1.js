@@ -238,7 +238,7 @@ function flipBack() {
 
     if (mediaQuery.matches) {
       backDesign.setAttribute("width", "95px");
-      backDesign.setAttribute("height", "auto");
+      backDesign.setAttribute("height", "125px");
     } else {
       backDesign.setAttribute("width", "200px");
       backDesign.setAttribute("height", "auto");

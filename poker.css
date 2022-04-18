@@ -96,6 +96,7 @@ body {
 
 h1 {
   text-align: center;
+  color: yellow;
 }
 
 .card {
@@ -201,6 +202,7 @@ h1 {
 
 @media screen and (max-width: 700px) {
   h1 {
+    padding-top: 20px;
     font-size: 20px;
   }
 
@@ -210,7 +212,8 @@ h1 {
   }
 
   #container {
-    padding: 10px;
+    padding: 5px;
+    margin: 5px;
   }
 
   .card {
