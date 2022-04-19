@@ -8,6 +8,56 @@ let canStart = "false";
 
 // DESIGNS
 
+//clicking sound
+function openPayTableSound() {
+  let audio = new Audio(
+    "file:///Users/ooizihao/OneDrive/swe/Module1/project1/video-poker-bootcamp/assets/Sounds/ui_menu_open_1.wav"
+  );
+  audio.play();
+}
+
+function closePayTableSound() {
+  let audio = new Audio(
+    "file:///Users/ooizihao/OneDrive/swe/Module1/project1/video-poker-bootcamp/assets/Sounds/ui_menu_close_1.wav"
+  );
+  audio.play();
+}
+
+function startGameClick() {
+  let audio = new Audio(
+    "file:///Users/ooizihao/OneDrive/swe/Module1/project1/video-poker-bootcamp/assets/Sounds/shuffle.wav"
+  );
+  audio.play();
+}
+
+function heldCardSound() {
+  let audio = new Audio(
+    "file:///Users/ooizihao/OneDrive/swe/Module1/project1/video-poker-bootcamp/assets/Sounds/shears_01.flac"
+  );
+  audio.play();
+}
+
+function dealCardSound() {
+  let audio = new Audio(
+    "file:///Users/ooizihao/OneDrive/swe/Module1/project1/video-poker-bootcamp/assets/Sounds/playcard.wav"
+  );
+  audio.play();
+}
+
+function restartSound() {
+  let audio = new Audio(
+    "file:///Users/ooizihao/OneDrive/swe/Module1/project1/video-poker-bootcamp/assets/Sounds/cuckoo.wav"
+  );
+  audio.play();
+}
+
+function tryAgainSound() {
+  let audio = new Audio(
+    "file:///Users/ooizihao/OneDrive/swe/Module1/project1/video-poker-bootcamp/assets/Sounds/try_again.mp3"
+  );
+  audio.play();
+}
+
 //message board
 const message = document.getElementById("displaymessage");
 
@@ -190,6 +240,7 @@ function displayCards(array) {
           // console.log(array[i]);
         } else {
           cardState = "selected";
+          heldCardSound();
           container.classList.add("selected");
           heldMessage.innerHTML = "Held";
 
@@ -229,7 +280,7 @@ function flipBack() {
     let backDesign = document.createElement("IMG");
     backDesign.setAttribute(
       "src",
-      "file:///Users/ooizihao/Downloads/Poker%20card%20backside.png"
+      "file:///Users/ooizihao/OneDrive/swe/Module1/project1/video-poker-bootcamp/assets/Pictures/Poker%20card%20backside.png"
     );
 
     backDesign.setAttribute("align-items", "center");
@@ -383,6 +434,8 @@ function checkWin(array) {
       } else {
         message.innerHTML = "Try again!";
         credit -= 1;
+        tryAgainSound();
+        f;
         console.log("none of the above");
       }
     } else if (rankDiffSum == 4) {
@@ -412,6 +465,7 @@ function checkWin(array) {
       } else {
         message.innerHTML = "Try again!";
         credit -= 1;
+        tryAgainSound();
         console.log("none of the above");
       }
     } else if (uniqueRankCount == 3) {
@@ -430,6 +484,7 @@ function checkWin(array) {
       } else {
         message.innerHTML = "Try again!";
         credit -= 1;
+        tryAgainSound();
         console.log("none of the above");
       }
     } else if (uniqueRankCount == 4) {
@@ -441,6 +496,7 @@ function checkWin(array) {
       } else {
         message.innerHTML = "Try again!";
         credit -= 1;
+        tryAgainSound();
         console.log("none of the above");
       }
     } else if (uniqueRankCount == 5) {
@@ -457,6 +513,7 @@ function checkWin(array) {
         } else {
           message.innerHTML = "Try again!";
           credit -= 1;
+          tryAgainSound();
           console.log("none of the above");
         }
       } else if (rankDiffSum == 4) {
@@ -467,11 +524,13 @@ function checkWin(array) {
       } else {
         message.innerHTML = "Try again!";
         credit -= 1;
+        tryAgainSound();
         console.log("none of the above");
       }
     } else {
       message.innerHTML = "Try again!";
       credit -= 1;
+      tryAgainSound();
       console.log("none of the above");
     }
   }
@@ -503,6 +562,7 @@ const initGame = () => {
     canStart = "true";
 
     if (btn.value == "Start game") {
+      startGameClick();
       message.innerHTML = "Select cards to be held or press deal";
       deck = shuffleCards(makeDeck());
       console.log(deck);
@@ -512,6 +572,7 @@ const initGame = () => {
 
       // displaying cards with back cover
     } else if (btn.value == "Deal" || btn.value == "Draw") {
+      dealCardSound();
       swapCard(array, deck);
       console.log("cards swapped");
       canStart = "false";
@@ -519,6 +580,7 @@ const initGame = () => {
 
       //resetting game
     } else if (btn.value == "Play again") {
+      restartSound();
       resetGame();
     }
   });

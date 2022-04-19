@@ -103,8 +103,8 @@ h1 {
   display: flex;
   justify-content: center;
   align-content: center;
-  margin: 10px;
-  padding: 30px;
+  margin: 5px;
+  padding: 20px;
   background-color: white;
   border-color: black;
   border-style: solid;
@@ -182,6 +182,7 @@ h1 {
 #creditScoreBoard {
   margin-top: 10px;
   text-align: center;
+  margin-bottom: 20px;
 }
 
 .display-message {
@@ -211,6 +212,10 @@ h1 {
     margin: 10px;
   }
 
+  .display-message {
+    font-size: 15px;
+  }
+
   #container {
     padding: 5px;
     margin: 5px;
@@ -227,5 +232,17 @@ h1 {
 
   .name {
     font-size: 15px;
+  }
+
+  #creditScoreBoard {
+    font-size: 15px;
+  }
+
+  .button {
+    /* position: relative; */
+    margin-top: 10px;
+  }
+  .table {
+    font-size: 10px;
   }
 }
