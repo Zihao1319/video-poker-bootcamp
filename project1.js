@@ -7,54 +7,39 @@ let credit = 100;
 let canStart = "false";
 
 // DESIGNS
-
 //clicking sound
 function openPayTableSound() {
-  let audio = new Audio(
-    "file:///Users/ooizihao/OneDrive/swe/Module1/project1/video-poker-bootcamp/assets/Sounds/ui_menu_open_1.wav"
-  );
+  let audio = new Audio("assets/Sounds/ui_menu_open_1.wav");
   audio.play();
 }
 
 function closePayTableSound() {
-  let audio = new Audio(
-    "file:///Users/ooizihao/OneDrive/swe/Module1/project1/video-poker-bootcamp/assets/Sounds/ui_menu_close_1.wav"
-  );
+  let audio = new Audio("assets/Sounds/ui_menu_close_1.wav");
   audio.play();
 }
 
 function startGameClick() {
-  let audio = new Audio(
-    "file:///Users/ooizihao/OneDrive/swe/Module1/project1/video-poker-bootcamp/assets/Sounds/shuffle.wav"
-  );
+  let audio = new Audio("assets/Sounds/shuffle.wav");
   audio.play();
 }
 
 function heldCardSound() {
-  let audio = new Audio(
-    "file:///Users/ooizihao/OneDrive/swe/Module1/project1/video-poker-bootcamp/assets/Sounds/shears_01.flac"
-  );
+  let audio = new Audio("assets/Sounds/shears_01.flac");
   audio.play();
 }
 
 function dealCardSound() {
-  let audio = new Audio(
-    "file:///Users/ooizihao/OneDrive/swe/Module1/project1/video-poker-bootcamp/assets/Sounds/playcard.wav"
-  );
+  let audio = new Audio("assets/Sounds/playcard.wav");
   audio.play();
 }
 
 function restartSound() {
-  let audio = new Audio(
-    "file:///Users/ooizihao/OneDrive/swe/Module1/project1/video-poker-bootcamp/assets/Sounds/cuckoo.wav"
-  );
+  let audio = new Audio("assets/Sounds/cuckoo.wav");
   audio.play();
 }
 
 function tryAgainSound() {
-  let audio = new Audio(
-    "file:///Users/ooizihao/OneDrive/swe/Module1/project1/video-poker-bootcamp/assets/Sounds/try_again.mp3"
-  );
+  let audio = new Audio("assets/Sounds/try_again.mp3");
   audio.play();
 }
 
@@ -280,7 +265,7 @@ function flipBack() {
     let backDesign = document.createElement("IMG");
     backDesign.setAttribute(
       "src",
-      "file:///Users/ooizihao/OneDrive/swe/Module1/project1/video-poker-bootcamp/assets/Pictures/Poker%20card%20backside.png"
+      "assets/Pictures/Poker%20card%20backside.png"
     );
 
     backDesign.setAttribute("align-items", "center");
@@ -291,7 +276,7 @@ function flipBack() {
       backDesign.setAttribute("width", "95px");
       backDesign.setAttribute("height", "125px");
     } else {
-      backDesign.setAttribute("width", "200px");
+      backDesign.setAttribute("width", "150px");
       backDesign.setAttribute("height", "auto");
 
       // backDesign.setAttribute("margin", "30px");
@@ -600,115 +585,3 @@ function resetGame() {
 }
 
 initGame();
-
-// const deck = shuffleCards(makeDeck());
-// let array = getHandArray(deck, 5);
-// displayCards(array);
-// calcHandScore(array);
-// console.log(cardSelectedCounter);
-
-// let tempArray = getArrayInfo(array);
-// // console.log(tempArray);
-// checkWin(tempArray);
-
-// displayBackside(5);
-
-// game logic
-
-//1. all cards are flipped, showing backside only
-//1.1 Button is deal, click and all cards will be displayed
-//2.1 Select the cards you want to hold
-//2.2 button will change to draw
-//2.3 Click and it will become deal again
-//2.4 cards will be redisplayed
-//2.5 showing the message and
-//2.6 credit either will be added or subtracted
-//3. Click deal, and cards
-
-// ARCHIVED CODES
-// min = sortedRankArray[0];
-// max = sortedRankArray[0];
-// for (let i = 0; i < sortedRankArray.length; i++) {
-//   if (min > sortedRankArray[i]) {
-//     min = sortedRankArray[i];
-//   }
-//   if (max < sortedRankArray[i]) {
-//     max = sortedRankArray[i];
-//   }
-// }
-// console.log(min);
-// console.log(max);
-// rankDiffSum = max - min;
-
-// // displaying the back side of card
-// function displayBackside(num) {
-//   for (let i = 0; i < num; i++) {
-//     let backDesign = document.createElement("IMG");
-//     backDesign.setAttribute(
-//       "src",
-//       "http://chetart.com/blog/wp-content/uploads/2012/05/playing-card-back.jpg"
-//     );
-//     backDesign.setAttribute("width", "200px");
-//     backDesign.setAttribute("height", "250px");
-//     backDesign.setAttribute("margin", "30px");
-//     backDesign.setAttribute("padding", "30px");
-//     backDesign.setAttribute("alt", "Some really cool pic");
-//     document.getElementById(`cardContainer${i + 1}`).appendChild(backDesign);
-//     // console.log("passed");
-//   }
-// }
-
-// // function to assess the scores (calculatehand)
-// function calcHandScore(array) {
-//   let score = 0;
-//   for (let i = 0; i < array.length; i++) {
-//     score += array[i].rank;
-//   }
-//   console.log(`HandArray score: ${score}`);
-//   return score;
-// }
-
-// // draw backside
-// function drawCard2(currentCard) {
-//   const suit = document.createElement("div");
-//   suit.classList.add("suit", currentCard.color);
-//   suit.innerHTML = currentCard.symbol;
-
-//   const name = document.createElement("div");
-//   name.classList.add("name", currentCard.color);
-//   name.innerHTML = currentCard.name;
-
-//   const card = document.createElement("div");
-//   card.classList.add("card");
-
-//   card.appendChild(name);
-//   card.appendChild(suit);
-
-//   return card;
-// }
-
-// // game initialization
-// const initGame = () => {
-//   let deck = shuffleCards(makeDeck());
-//   let array = getHandArray(deck, 5);
-//   btn.value = "Start game";
-//   let gameState;
-
-//   btn.addEventListener("click", () => {
-//     if (canStart == "false") {
-//       // displaying cards with back cover
-//       displayCards(array);
-//       canStart = "true";
-//       btn.value = "Flip over!";
-
-//     } else if (canStart == "true") {
-//       btn.value = "Deal";
-//       displayCards(array);
-
-//       // display cards if swapped
-//       let newArray = swapCard(array, deck);
-//       let newArrayInfo = getArrayInfo(newArray);
-//       checkWin(newArrayInfo);
-//     }
-//   });
-// };
